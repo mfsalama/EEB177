@@ -1,0 +1,44 @@
+---
+title: "In_class_ex_8"
+output: md_document
+date: "March 1, 2017"
+---
+
+## Reading in data files
+
+```{r}
+cocoli_dat <- read.table("/home/eeb177-student/Desktop/eeb-177/class-assignments/classwork-21-Feb/cocoli.txt", header = TRUE)
+
+cocoli_dat
+sizes_in_94 <- cocoli_dat$dbh1
+names(sizes_in_94) <- cocoli_dat$tag
+sizes_in_94[1:10]
+sizes_in_94[c("000009", "000099")]
+
+
+sizes_in_97 <- cocoli_dat$dbh2
+
+rgr_1 <- (sizes_in_97-sizes_in_94)/sizes_in_94
+rgr_1
+
+cocoli_dat$rgr_1 <- rgr_1
+cocoli_dat
+```
+```{r}
+# bar graph - make with barplot()
+# box plot - make with boxplot()
+#scatterplot- make with plot()
+# histogram- make with hist()
+
+hist(sizes_in_94, xlab = "DBH(mm)", main= "Distribution of tree sizes in cocoli (1994)")
+
+plot(x= sizes_in_94, y= sizes_in_97, main= "scatterplot of sizes", xlab= "sizes in 1994 (mm)", ylab= "Sizes in 1997", pch= 19)
+```
+
+```{r}
+library(dplyr)
+
+# %>% is indentical to the | in terminal
+cocoli_dat
+cocoli_dat %>% filter(dbh1 > 0) %>%  group_by(spcode) %>% summarize(sum_dbh_1994= sum(dbh1)) %>% arrange(-sum_dbh_1994)
+```
